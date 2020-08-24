@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEfCoreUpdate.Models", "TestEfCoreUpdate.Models\TestEfCoreUpdate.Models.csproj", "{7334C009-5472-413E-8FDE-5E264D355BDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEfCoreUpdate.Migrations", "TestEfCoreUpdate.Migrations\TestEfCoreUpdate.Migrations.csproj", "{E20F0B5A-CC66-406F-BDE2-971877273EDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEfCoreUpdate.BlazorApp", "TestEfCoreUpdate.BlazorApp\TestEfCoreUpdate.BlazorApp.csproj", "{4B1ADCDB-4145-4BCD-BF12-659797A34231}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7334C009-5472-413E-8FDE-5E264D355BDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7334C009-5472-413E-8FDE-5E264D355BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7334C009-5472-413E-8FDE-5E264D355BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7334C009-5472-413E-8FDE-5E264D355BDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E20F0B5A-CC66-406F-BDE2-971877273EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E20F0B5A-CC66-406F-BDE2-971877273EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E20F0B5A-CC66-406F-BDE2-971877273EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E20F0B5A-CC66-406F-BDE2-971877273EDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B1ADCDB-4145-4BCD-BF12-659797A34231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B1ADCDB-4145-4BCD-BF12-659797A34231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B1ADCDB-4145-4BCD-BF12-659797A34231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B1ADCDB-4145-4BCD-BF12-659797A34231}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

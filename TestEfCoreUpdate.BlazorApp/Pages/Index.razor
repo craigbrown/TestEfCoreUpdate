@@ -1,0 +1,123 @@
+﻿@page "/"
+
+@using Microsoft.EntityFrameworkCore
+@using TestEfCoreUpdate.Models
+@inject MyContext Context
+
+<h1>Test EF Core Update</h1>
+
+@if (TestCompany is null)
+{
+    <span>Loading page</span>
+}
+else
+{
+    var subscription = TestSubscription;
+
+    @if (subscription is null)
+    {
+        <span>The company has no subscriptions.</span>
+        <div>
+            <button type="button" @onclick="AddTestSubscription">Add Test Subscription</button>
+        </div>
+    }
+    else
+    {
+        var product = subscription.Product;
+
+        <div>
+            This is a test of changing a property of an entity to null.<br />
+            If you set the "New variant" dropdown to None, the Variant property of this Subscription will be null.<br />
+            When you click "Update" to update the database, this should just change the VariantId column for this row to null.<br />
+            Instead, it will delete the entire row.
+        </div>
+
+        <br /><br />
+
+        <div>
+            Subscription ID: @(subscription.SubscriptionId)<br />
+            Company:  @(TestCompany.CompanyName)<br />
+            Product: @(product.Name)<br />
+            Current Variant: @(CurrentVariant)<br />
+            <br />
+            New variant:
+        </div>
+
+        <select value=@(subscription.Variant?.VariantId ?? 0) @onchange="@(e => OnVariantChanged(subscription, int.Parse(e.Value.ToString())))">
+            <option value="0" selected=@(subscription.Variant is null)>None</option>
+            @foreach (var variant in product.Variants)
+            {
+                <option value=@variant.VariantId selected=@(subscription.Variant?.VariantId == variant.VariantId)>@variant.Name</option>
+            }
+        </select>
+
+        <br /><br />
+
+        <div>
+            <button type="button" @onclick="UpdateDatabase">Update</button>
+        </div>
+    }
+}
+
+
+@code {
+    private Company? TestCompany { get; set; }
+    private Subscription? TestSubscription { get; set; }
+    private string CurrentVariant { get; set; } = "None";
+
+    /// <summary>
+    /// Blazor lifecycle method. Called after the component is initialized.
+    /// </summary>
+    protected override async Task OnParametersSetAsync()
+    {
+        await GetLatestData();
+    }
+
+    /// <summary>
+    /// Gets the latest data from the database using EF Core.
+    /// </summary>
+    private async Task GetLatestData()
+    {
+        TestCompany = await Context.Company
+            .Include(c => c.Subscriptions)
+                .ThenInclude(s => s.Product)
+                    .ThenInclude(p => p.Variants)
+            .SingleOrDefaultAsync(c => c.CompanyId == 1);
+        TestSubscription = TestCompany.Subscriptions.FirstOrDefault();
+        CurrentVariant = TestSubscription?.Variant?.Name ?? "None";
+    }
+
+    /// <summary>
+    /// Called when the "New Variant" dropdown is changed.
+    /// </summary>
+    private void OnVariantChanged(Subscription subscription, int newVariantId)
+    {
+        subscription.Variant = subscription.Product.Variants.FirstOrDefault(v => v.VariantId == newVariantId);
+    }
+
+    /// <summary>
+    /// Adds a dummy subscription entry to the database.
+    /// </summary>
+    private async Task AddTestSubscription()
+    {
+        if (TestCompany is null) return;
+        var product = await Context.Product.Include(p => p.Variants).FirstOrDefaultAsync();
+        if (product is null) return;
+        TestCompany.Subscriptions.Add(new Subscription
+        {
+            Product = product,
+            Variant = product.Variants.FirstOrDefault(),
+        });
+        await UpdateDatabase();
+    }
+
+    /// <summary>
+    /// Called when the Update button is clicked.
+    /// </summary>
+    private async Task UpdateDatabase()
+    {
+        await Context.SaveChangesAsync();
+        await GetLatestData();
+    }
+}
+
